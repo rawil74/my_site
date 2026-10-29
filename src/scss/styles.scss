@@ -1,2 +1,12 @@
-// Импорт всех стилей Bootstrap
-@import "bootstrap/scss/bootstrap";
+// Единая точка сборки стилей.
+// Порядок важен: Bootstrap настраивается до импорта, токены задают переменные,
+// затем идут базовые правила, каркас, оболочка, блоки, страницы и анимации.
+@import "bootstrap-config";
+@import "tokens";
+@import "base";
+@import "layout";
+@import "shell";
+@import "blocks";
+@import "views";
+@import "motion";
+@import "background";

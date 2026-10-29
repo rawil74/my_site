@@ -1,0 +1,306 @@
+// Анимации привязаны к типу блока, а не к каждому элементу подряд.
+// Пока JS не добавил .is-in, блоки скрыты; после появления анимация
+// выбирает подходящий сценарий по data-block.
+.js .view [data-block] {
+  opacity: 0;
+}
+
+// Появление секции: спокойное проявление снизу вместо резкой маски.
+// Панель и содержимое двигаются вместе, поэтому границы не «мигают».
+.js .view [data-block].is-in {
+  opacity: 1;
+  animation: block-in var(--t-enter) var(--ease-soft) both;
+  animation-delay: var(--delay, 0ms);
+}
+
+// Уход вида — общее мягкое затухание. Без клипа, чтобы не рябило в глазах.
+.js .view.is-leaving [data-block] {
+  opacity: 1;
+  animation: block-out var(--t-exit) var(--ease-in) both;
+  animation-delay: 0ms;
+}
+
+.js .view [data-block].is-in .mask-line__inner {
+  animation: mask-up 980ms var(--ease-soft) both;
+  animation-delay: calc(var(--delay, 0ms) + 60ms);
+}
+
+.js .view [data-block].is-in .hero__name-line:nth-child(2) .mask-line__inner {
+  animation-delay: calc(var(--delay, 0ms) + 180ms);
+}
+
+.js .view [data-block].is-in[data-block="prose"] .prose-layout__body,
+.js .view [data-block].is-in[data-block="prose"] .statement__text,
+.js .view [data-block].is-in[data-block="prose"] .split__columns {
+  animation: rise-in 980ms var(--ease-soft) both;
+  animation-delay: calc(var(--delay, 0ms) + 120ms);
+}
+
+.js .view [data-block].is-in[data-block="bullets"] .bullet {
+  animation: bullet-in 860ms var(--ease-soft) both;
+  animation-delay: calc(var(--delay, 0ms) + 100ms + var(--j, 0) * var(--stagger));
+}
+
+.js .view [data-block].is-in[data-block="figure"] .figure__frame {
+  animation: frame-in 960ms var(--ease-soft) both;
+  animation-delay: calc(var(--delay, 0ms) + 80ms);
+}
+
+.js .view [data-block].is-in[data-block="figure"] .figure__media > * {
+  animation: media-in 1120ms var(--ease-soft) both;
+  animation-delay: calc(var(--delay, 0ms) + 100ms);
+}
+
+.js .view [data-block].is-in .figure__scan,
+.js .view [data-block].is-in .project-card__scan {
+  animation: scan 980ms var(--ease-soft) both;
+  animation-delay: calc(var(--delay, 0ms) + 150ms);
+}
+
+.js .view [data-block].is-in[data-block="chart"] .chart__path {
+  stroke-dasharray: 1;
+  animation: draw 1350ms var(--ease-soft) both;
+  animation-delay: calc(var(--delay, 0ms) + 150ms);
+}
+
+.js .view [data-block].is-in[data-block="chart"] .chart__point {
+  animation: point-in 520ms var(--ease-soft) both;
+  animation-delay: calc(var(--delay, 0ms) + 650ms + var(--n, 0) * 65ms);
+}
+
+.js .view [data-block].is-in[data-block="timeline"] .timeline-entries__line {
+  animation: line-y 1000ms var(--ease-soft) both;
+  animation-delay: calc(var(--delay, 0ms) + 80ms);
+}
+
+.js .view [data-block].is-in[data-block="timeline"] .timeline-steps__line {
+  animation: line-x 1000ms var(--ease-soft) both;
+  animation-delay: calc(var(--delay, 0ms) + 80ms);
+}
+
+.js .view [data-block].is-in[data-block="timeline"] .timeline-entry,
+.js .view [data-block].is-in[data-block="timeline"] .timeline-step {
+  animation: row-in 840ms var(--ease-soft) both;
+  animation-delay: calc(var(--delay, 0ms) + 150ms + var(--j, 0) * 80ms);
+}
+
+.js .view [data-block].is-in[data-block="matrix"] .skill-row,
+.js .view [data-block].is-in[data-block="matrix"] .competency {
+  animation: row-in 760ms var(--ease-soft) both;
+  animation-delay: calc(var(--delay, 0ms) + 80ms + var(--j, 0) * 55ms);
+}
+
+.js .view [data-block].is-in[data-block="project-tile"] .project-card__media {
+  animation: media-wipe 960ms var(--ease-soft) both;
+  animation-delay: calc(var(--delay, 0ms) + 110ms);
+}
+
+.js .view [data-block].is-in[data-block="project-tile"] .project-card__content,
+.js .view [data-block].is-in[data-block="project-tile"] .project-card__links {
+  animation: rise-in 900ms var(--ease-soft) both;
+  animation-delay: calc(var(--delay, 0ms) + 180ms);
+}
+
+.js .view [data-block].is-in[data-block="contact"] .contact__mail::after {
+  animation: line-grow 900ms var(--ease-soft) both;
+  animation-delay: calc(var(--delay, 0ms) + 320ms);
+}
+
+.js .view [data-block].is-in[data-block="project-tile"] .next-project__arrow {
+  animation: arrow-in 800ms var(--ease-soft) both;
+  animation-delay: calc(var(--delay, 0ms) + 260ms);
+}
+
+// Базовые keyframes. Отдельные блоки комбинируют их со своими задержками.
+@keyframes block-in {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 18px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes block-out {
+  from {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    opacity: 0;
+    transform: translate3d(0, -10px, 0);
+  }
+}
+
+@keyframes mask-up {
+  from {
+    transform: translate3d(0, 112%, 0);
+  }
+  to {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes rise-in {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 18px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes bullet-in {
+  from {
+    opacity: 0;
+    transform: translate3d(-10px, 0, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes frame-in {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 12px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes media-in {
+  from {
+    transform: scale(1.06);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+
+@keyframes media-wipe {
+  from {
+    clip-path: inset(0 100% 0 0);
+  }
+  to {
+    clip-path: inset(0);
+  }
+}
+
+@keyframes scan {
+  0% {
+    left: 0;
+    opacity: 0;
+  }
+  12% {
+    opacity: 0.7;
+  }
+  72% {
+    opacity: 0.4;
+  }
+  100% {
+    left: 100%;
+    opacity: 0;
+  }
+}
+
+@keyframes draw {
+  from {
+    stroke-dashoffset: 1;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes point-in {
+  from {
+    transform: scale(0.4);
+    transform-origin: center;
+  }
+  to {
+    transform: scale(1);
+    transform-origin: center;
+  }
+}
+
+@keyframes line-y {
+  from {
+    transform: scaleY(0);
+  }
+  to {
+    transform: scaleY(1);
+  }
+}
+
+@keyframes line-x {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+@keyframes row-in {
+  from {
+    clip-path: inset(0 100% 0 0);
+    transform: translate3d(-8px, 0, 0);
+  }
+  to {
+    clip-path: inset(0);
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes line-grow {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+@keyframes arrow-in {
+  from {
+    transform: translate3d(-14px, 0, 0);
+  }
+  to {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+// При reduced-motion контент должен быть виден сразу, без масок и сдвигов.
+@media (prefers-reduced-motion: reduce) {
+  .js .view [data-block] {
+    opacity: 1 !important;
+    clip-path: none !important;
+    animation: none !important;
+  }
+
+  .js .view [data-block] *,
+  .js .view [data-block] *::before,
+  .js .view [data-block] *::after {
+    animation: none !important;
+    transform: none !important;
+    clip-path: none !important;
+  }
+
+  .figure__scan,
+  .project-card__scan {
+    display: none;
+  }
+
+  .offcanvas,
+  .offcanvas-backdrop {
+    transition: none !important;
+  }
+}

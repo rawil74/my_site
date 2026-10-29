@@ -1,15 +1,41 @@
 <!doctype html>
-<html lang="ru">
+<html lang="ru" data-bs-theme="dark">
   <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Bootstrap + Vite</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="Персональный сайт-портфолио разработчика: проекты, инженерный подход, навыки и направления развития."
+    />
+    <meta name="theme-color" content="#18191d" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <title>Равиль Фамилия — разработчик</title>
+    <script>
+      document.documentElement.classList.add('js');
+    </script>
     <script type="module" src="./js/main.js"></script>
   </head>
-  <body>
-    <div class="container py-4 px-3 mx-auto">
-      <h1>Привет, Bootstrap и Vite!</h1>
-      <button class="btn btn-primary">Primary button</button>
-    </div>
+  <body id="top">
+    <a class="skip-link" href="#main">Перейти к содержимому</a>
+
+    <canvas id="bg-canvas" class="bg-canvas" aria-hidden="true"></canvas>
+    <div class="bg-veil" aria-hidden="true"></div>
+
+    <header id="site-header" class="site-header"></header>
+    <div id="mobile-nav"></div>
+
+    <main id="main" class="site-main" tabindex="-1">
+      <div id="view-root" class="view-root"></div>
+    </main>
+
+    <footer id="site-footer" class="site-footer"></footer>
+
+    <p id="route-status" class="visually-hidden" aria-live="polite"></p>
+
+    <noscript>
+      <div class="noscript-message">
+        Для работы сайта нужен JavaScript: навигация и контент собираются на клиенте.
+      </div>
+    </noscript>
   </body>
 </html>

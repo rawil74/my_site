@@ -1,0 +1,118 @@
+// Каркас страницы: общая ширина, вертикальные блоки и панели контента.
+// Панели нужны, чтобы будущая активная сцена на canvas не конкурировала
+// с текстом. Они полупрозрачные: фон виден в зазорах и сквозь поверхность.
+.site-main {
+  padding-top: var(--header-h);
+}
+
+.view-root {
+  min-height: 60svh;
+}
+
+.view {
+  position: relative;
+  width: 100%;
+  max-width: var(--shell-max);
+  margin-inline: auto;
+  padding-inline: var(--shell-pad);
+}
+
+.block {
+  position: relative;
+  isolation: isolate;
+  padding-block: var(--section-y);
+  padding-inline: var(--panel-pad);
+  scroll-margin-top: calc(var(--header-h) + 24px);
+}
+
+// Общая подложка секции. Псевдоэлемент выходит за контентную колонку
+// вбок, поэтому строки не прилипают к границе панели.
+.block::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset: var(--panel-gap) calc(var(--panel-x) * -1);
+  border: 1px solid var(--panel-border);
+  background: linear-gradient(180deg, var(--panel-top), var(--panel-bottom));
+  box-shadow: var(--panel-shadow);
+  pointer-events: none;
+}
+
+// Карточки проектов и вложенные блоки страницы проекта уже имеют
+// собственные поверхности — вторую панель под ними не рисуем.
+.block--project-tile::before,
+.project-content .block::before {
+  display: none;
+}
+
+// У карточек проекта своя внутренняя рамка, поэтому внешний отступ
+// секции им не нужен — иначе сетка каталога станет слишком узкой.
+.block--project-tile {
+  padding-inline: 0;
+}
+
+// У первого экрана меньше верхнего отступа: он должен начинаться сразу
+// под шапкой и не тратить высоту на пустоту.
+.block--home-hero {
+  padding-block: clamp(24px, 4vh, 48px) 0;
+}
+
+// Вводные страницы получают чуть более плотный ритм, чем контентные секции.
+.block--page-intro {
+  padding-top: clamp(44px, 7vh, 84px);
+  padding-bottom: clamp(56px, 8vh, 110px);
+}
+
+.block-action {
+  margin-top: clamp(28px, 4vw, 48px);
+}
+
+// Заголовок секции построен на общей 12-колоночной сетке.
+.section-head {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: var(--gap);
+  align-items: start;
+  margin-bottom: clamp(32px, 4vw, 56px);
+}
+
+.section-head .eyebrow {
+  grid-column: 1 / span 3;
+  padding-top: 4px;
+}
+
+.section-head .section-title {
+  grid-column: 4 / span 8;
+}
+
+.section-head .section-note {
+  grid-column: 4 / span 7;
+  margin-top: 14px;
+}
+
+.section-head > .section-note:first-child {
+  grid-column: 1 / span 3;
+}
+
+// На планшете сетка упрощается до шести колонок, а заголовок занимает всю ширину.
+@media (max-width: 991.98px) {
+  .section-head {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+  }
+
+  .section-head .eyebrow,
+  .section-head .section-title,
+  .section-head .section-note {
+    grid-column: 1 / -1;
+  }
+
+  .section-head .section-note {
+    margin-top: 4px;
+  }
+}
+
+@media (max-width: 767.98px) {
+  .block {
+    padding-block: clamp(56px, 12vw, 92px);
+  }
+}

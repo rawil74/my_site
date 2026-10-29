@@ -1,0 +1,357 @@
+// Базовый слой: сброс, типографика документа и небольшие общие утилиты.
+// Здесь нет оформления конкретных секций — только фундамент для остальных файлов.
+
+// Единая модель размеров, чтобы padding и border не ломали сетку.
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  min-width: 320px;
+  scroll-behavior: auto;
+  background: var(--bg);
+}
+
+// Основной холст документа. Фон задаётся здесь, а canvas остаётся прозрачным.
+body {
+  min-height: 100svh;
+  margin: 0;
+  overflow-x: clip;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: var(--fs-body);
+  line-height: 1.65;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+// Выделение инвертирует палитру, но остаётся в том же монохромном диапазоне.
+body::selection,
+::selection {
+  color: var(--bg);
+  background: var(--text);
+}
+
+// Контент и подвал должны лежать выше фиксированного фонового слоя.
+main,
+.site-footer {
+  position: relative;
+  z-index: 1;
+}
+
+img,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+img {
+  height: auto;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+button {
+  color: inherit;
+}
+
+p,
+h1,
+h2,
+h3,
+h4,
+ul,
+ol,
+dl,
+dd,
+figure {
+  margin: 0;
+}
+
+ul,
+ol {
+  padding: 0;
+  list-style: none;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-weight: 400;
+  // Аварийный разрыв спасает от горизонтального скролла, если длинное
+  // слово не помещается даже на узком экране.
+  overflow-wrap: break-word;
+}
+
+// Автоматические переносы включаем только на телефонах: на десктопе
+// они могут некрасиво разрывать короткие заголовки вроде «Инфраструктура».
+@media (max-width: 479.98px) {
+  h1,
+  h2,
+  h3,
+  h4 {
+    hyphens: auto;
+  }
+}
+
+:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 4px;
+}
+
+[data-route-heading]:focus {
+  outline: none;
+}
+
+// Ссылка для клавиатурной навигации: скрыта, пока не получит фокус.
+.skip-link {
+  position: fixed;
+  top: 12px;
+  left: 12px;
+  z-index: 200;
+  transform: translateY(-160%);
+  padding: 10px 14px;
+  border: 1px solid var(--text);
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-mono);
+  font-size: var(--fs-meta);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  transition: transform 180ms var(--ease-out);
+}
+
+.skip-link:focus {
+  transform: translateY(0);
+}
+
+// Общий контейнер для шапки, подвала и широких строк.
+.shell {
+  width: 100%;
+  max-width: var(--shell-max);
+  margin-inline: auto;
+  padding-inline: var(--shell-pad);
+}
+
+// Моноширинные подписи используются для метаданных и технических обозначений.
+.mono {
+  font-family: var(--font-mono);
+  font-size: var(--fs-meta);
+  font-weight: 400;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-3);
+}
+
+// Надзаголовок секции: короткая линия и номер/категория.
+.eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-mono);
+  font-size: var(--fs-meta);
+  letter-spacing: 0.13em;
+  line-height: 1.4;
+  text-transform: uppercase;
+  color: var(--text-3);
+}
+
+.eyebrow::before {
+  content: "";
+  width: 22px;
+  height: 1px;
+  flex: 0 0 auto;
+  background: var(--line-strong);
+}
+
+.eyebrow__text {
+  display: inline-block;
+}
+
+// Основной заголовок секции и вводный лид.
+.section-title {
+  font-family: var(--font-display);
+  font-size: var(--fs-h2);
+  font-weight: 300;
+  line-height: 1.02;
+  letter-spacing: -0.035em;
+  color: var(--text);
+  text-wrap: balance;
+}
+
+.section-note {
+  max-width: 48ch;
+  color: var(--text-3);
+  line-height: 1.6;
+}
+
+.lead {
+  max-width: 48ch;
+  font-size: var(--fs-lead);
+  line-height: 1.45;
+  letter-spacing: -0.015em;
+  color: var(--text-2);
+  text-wrap: pretty;
+}
+
+.prose {
+  max-width: 68ch;
+  font-size: var(--fs-body);
+  line-height: 1.7;
+  color: var(--text-2);
+  text-wrap: pretty;
+}
+
+.prose + .prose {
+  margin-top: 1.1em;
+}
+
+.prose strong,
+.prose em,
+.is-bright {
+  color: var(--text);
+  font-style: normal;
+  font-weight: 500;
+}
+
+.section-note,
+.mono {
+  font-feature-settings: "tnum" 1;
+}
+
+// Кнопки и ссылки-действия. Все состояния описаны здесь, чтобы блоки
+// не дублировали одни и те же hover/focus-правила.
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.action {
+  display: inline-flex;
+  min-height: 44px;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 0 16px;
+  border: 1px solid var(--line-strong);
+  background: transparent;
+  color: var(--text);
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  letter-spacing: 0.08em;
+  line-height: 1;
+  text-transform: uppercase;
+  transition:
+    background-color 180ms var(--ease-out),
+    border-color 180ms var(--ease-out),
+    color 180ms var(--ease-out);
+}
+
+.action .arrow {
+  transition: transform 220ms var(--ease-out);
+}
+
+.action:hover {
+  border-color: var(--text);
+}
+
+.action:hover .arrow {
+  transform: translate(2px, -2px);
+}
+
+.action--solid {
+  border-color: var(--text);
+  background: var(--text);
+  color: var(--bg);
+}
+
+.action--solid:hover {
+  background: transparent;
+  color: var(--text);
+}
+
+.action.is-disabled,
+.is-disabled {
+  opacity: 0.42;
+  pointer-events: none;
+}
+
+.arrow {
+  display: inline-block;
+}
+
+.link-arrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border-bottom: 1px solid var(--line-strong);
+  padding-bottom: 4px;
+  transition: border-color 180ms var(--ease-out);
+}
+
+.link-arrow:hover {
+  border-color: var(--text);
+}
+
+// Тонкий разделитель для локальных композиций.
+.hairline {
+  height: 1px;
+  background: var(--line);
+}
+
+.visually-hidden,
+.visually-hidden-focusable:not(:focus):not(:focus-within) {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
+// Сообщение для случая, когда JavaScript отключён.
+.noscript-message {
+  position: fixed;
+  right: var(--shell-pad);
+  bottom: var(--shell-pad);
+  left: var(--shell-pad);
+  z-index: 100;
+  padding: 20px;
+  border: 1px solid var(--line-strong);
+  background: var(--surface-1);
+  color: var(--text-2);
+  font-family: var(--font-mono);
+  font-size: var(--fs-meta);
+  line-height: 1.6;
+}
+
+// Уважаем системную настройку: отключаем движение, но оставляем интерфейс рабочим.
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}
