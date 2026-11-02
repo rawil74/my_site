@@ -4,6 +4,8 @@
 // и возврат фокуса на заголовок после навигации.
 import { Offcanvas } from 'bootstrap';
 
+import { prefersReducedMotion } from '../render/motion.js';
+
 /** Пункты основной и мобильной навигации. */
 function navLinks(site, mobile = false) {
   return site.nav
@@ -132,11 +134,14 @@ export function initShell() {
 
   // «Наверх» обрабатываем сами: якорь #top конфликтует с hash-навигацией
   // и может сначала прокрутить страницу, а затем вернуть её обратно.
-  // behavior: instant отменяет и глобальный smooth-scroll Bootstrap,
-  // поэтому кнопка сразу оказывается в начале текущей страницы.
+  // hash при этом не трогаем, а прокрутку делаем плавной (с уважением к
+  // системной настройке «уменьшить движение»).
   document.querySelector('[data-scroll-top]')?.addEventListener('click', (event) => {
     event.preventDefault();
-    window.scrollTo({ top: 0, behavior: 'instant' });
+    window.scrollTo({
+      top: 0,
+      behavior: prefersReducedMotion() ? 'auto' : 'smooth',
+    });
     window.history.replaceState(
       window.history.state,
       '',

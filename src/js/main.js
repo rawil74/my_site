@@ -19,8 +19,8 @@ document.documentElement.classList.add('js');
 mountShell(site);
 initShell();
 
-// Canvas создаётся один раз. Роутер только сообщает ему текущий раздел,
-// поэтому сцена не перезагружается при переходах.
+// Canvas создаётся один раз и живёт независимо от роутера: смена раздела
+// не перезапускает сцену и не сбрасывает положение курсора.
 const background = createBackground(document.getElementById('bg-canvas'));
 
 initRouter();

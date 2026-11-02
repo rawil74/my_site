@@ -1,12 +1,13 @@
 // Глобальные дизайн-токены. Это единственная точка, где задаются палитра,
 // типографическая шкала, отступы и тайминги анимаций.
 :root {
-  // Шрифты. Для имени на главной используется привычный системный стек —
-  // его можно заменить на брендовый шрифт, не трогая остальную типографику.
+  // Шрифты. Загруженные веб-шрифты стоят первыми и там, где нужен стабильный
+  // вид на всех платформах: системный стек давал на телефоне Roboto/SF вместо
+  // Segoe UI, из-за чего имя на главной выглядело иначе, чем на десктопе.
   --font-display: "Unbounded Variable", "Unbounded", system-ui, sans-serif;
   --font-body: "Golos Text Variable", "Golos Text", system-ui, -apple-system, sans-serif;
   --font-mono: "JetBrains Mono Variable", "JetBrains Mono", ui-monospace, monospace;
-  --font-name: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-name: "Golos Text Variable", "Golos Text", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
 
   // Палитра: не чисто чёрная, а тёмно-серая база, чтобы вспомогательные
   // поверхности читались как отдельные слои, а не сливались с фоном.
