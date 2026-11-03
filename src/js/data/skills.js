@@ -1,6 +1,6 @@
 // Справочник навыков: легенда уровней и группы компетенций.
 // Уровни описывают контекст применения, а не «процент владения».
-// TODO(author): уровни и контекст применения — заглушки для прототипа.
+// TODO(author): уровни — рабочая оценка, уточнить после ревью.
 export const skillLegend = [
   { level: 'study', label: 'изучаю' },
   { level: 'edu', label: 'учебные проекты' },
@@ -11,79 +11,114 @@ export const skillLegend = [
 export const skillGroups = [
   {
     index: '01',
-    title: 'Языки',
-    note: 'То, на чём формулируются решения.',
+    title: 'Стек',
+    note: 'Порядок — от самого сильного к базовому.',
     skills: [
-      { name: 'TypeScript', context: 'основной язык в проектах и инструментах', level: 'self' },
-      { name: 'JavaScript', context: 'браузер, Node.js, canvas-эксперименты', level: 'self' },
-      { name: 'SQL', context: 'модели данных, запросы, миграции', level: 'self' },
-      { name: 'Python', context: 'учебные задачи и автоматизация', level: 'edu' },
+      {
+        name: 'Python',
+        context: 'основной язык: FastAPI-сервисы, SQLAlchemy, автоматизация',
+        level: 'self',
+      },
+      {
+        name: 'FastAPI',
+        context: 'HTTP API и WebSocket-комнаты Quiz Service',
+        level: 'self',
+      },
+      {
+        name: 'SQLAlchemy',
+        context: 'модели, запросы и миграции в Quiz Service',
+        level: 'self',
+      },
+      {
+        name: 'PostgreSQL',
+        context: 'основное хранилище: схема, индексы, запросы',
+        level: 'self',
+      },
+      {
+        name: 'Redis',
+        context: 'кэш, состояние комнат и координация',
+        level: 'self',
+      },
+      {
+        name: 'Docker',
+        context: 'локальное окружение и запуск сервисов через compose',
+        level: 'self',
+      },
+      {
+        name: 'Godot 4',
+        context: 'веб-геймдев: прототипы и небольшие игры',
+        level: 'edu',
+      },
+      {
+        name: 'JavaScript / TypeScript',
+        context: 'фронтенд сайта, SPA-роутер и canvas-сцена',
+        level: 'self',
+      },
+      {
+        name: 'ClickHouse',
+        context: 'аналитика событий викторин',
+        level: 'edu',
+      },
+      {
+        name: '1С',
+        context: 'прикладная разработка и интеграции',
+        level: 'edu',
+      },
+      {
+        name: 'C#',
+        context: 'базовый уровень: учебные задачи и инструменты',
+        level: 'study',
+      },
     ],
   },
   {
     index: '02',
-    title: 'Backend',
-    note: 'API, доменная логика и работа с состоянием.',
+    title: 'Инженерные практики',
+    note: 'То, что применяю в собственных сервисах.',
     skills: [
-      { name: 'Node.js', context: 'HTTP-сервисы, CLI-инструменты', level: 'self' },
-      { name: 'Fastify', context: 'API для собственных проектов', level: 'self' },
-      { name: 'REST', context: 'проектирование контрактов и ошибок', level: 'self' },
-      { name: 'Очереди и фоновые задачи', context: 'сценарии обработки данных', level: 'study' },
+      {
+        name: 'Чистая архитектура',
+        context: 'границы слоёв и зависимости по Мартину',
+        level: 'self',
+      },
+      {
+        name: 'Авторизация',
+        context: 'аутентификация, роли и доступ в сервисах',
+        level: 'self',
+      },
+      {
+        name: 'Тестирование',
+        context: 'юнит- и интеграционные проверки API и домена',
+        level: 'self',
+      },
     ],
   },
   {
     index: '03',
-    title: 'Frontend',
-    note: 'Интерфейс как продолжение модели.',
+    title: 'База и дополнительно',
+    note: 'Фундамент, на который опираются решения.',
     skills: [
-      { name: 'React', context: 'интерфейсы карт, каталогов и форм', level: 'self' },
-      { name: 'Vue 3', context: 'личная библиотека материалов', level: 'self' },
-      { name: 'CSS / SCSS', context: 'дизайн-системы, сетки, адаптивность', level: 'self' },
-      { name: 'Canvas 2D', context: 'генеративный фон и визуализация', level: 'study' },
-    ],
-  },
-  {
-    index: '04',
-    title: 'Данные',
-    note: 'Хранение, связи и честная цена решений.',
-    skills: [
-      { name: 'PostgreSQL', context: 'реляционные модели и запросы', level: 'self' },
-      { name: 'SQLite', context: 'локальные приложения и эксперименты', level: 'self' },
-      { name: 'Redis', context: 'кэш и сценарии очередей', level: 'study' },
-      { name: 'Индексы и запросы', context: 'чтение планов, оптимизация выборок', level: 'study' },
-    ],
-  },
-  {
-    index: '05',
-    title: 'Архитектура',
-    note: 'Границы, компромиссы и объяснимые решения.',
-    skills: [
-      { name: 'Моделирование предметной области', context: 'сущности, связи, ограничения', level: 'self' },
-      { name: 'Проектирование API', context: 'контракты и обработка ошибок', level: 'self' },
-      { name: 'Технические решения', context: 'ADR и разбор альтернатив', level: 'edu' },
-      { name: 'Распределённые системы', context: 'теория и учебные сценарии', level: 'study' },
-    ],
-  },
-  {
-    index: '06',
-    title: 'Тестирование',
-    note: 'Проверка поведения, а не количества тестов.',
-    skills: [
-      { name: 'Vitest', context: 'юнит-тесты доменной логики', level: 'self' },
-      { name: 'Playwright', context: 'сценарии интерфейса и скриншоты', level: 'edu' },
-      { name: 'Тестовые данные', context: 'фикстуры и воспроизводимые сценарии', level: 'edu' },
-      { name: 'Ручная проверка', context: 'адаптивность, клавиатура, состояния', level: 'self' },
-    ],
-  },
-  {
-    index: '07',
-    title: 'Инфраструктура',
-    note: 'Чтобы систему можно было запустить и повторить.',
-    skills: [
-      { name: 'Git', context: 'ветки, история, ревью собственных изменений', level: 'self' },
-      { name: 'Docker', context: 'локальные окружения', level: 'edu' },
-      { name: 'Linux / shell', context: 'базовые сценарии разработки', level: 'edu' },
-      { name: 'Vite', context: 'сборка и структура фронтенда', level: 'self' },
+      {
+        name: 'Веб и сети',
+        context: 'HTTP, WebSocket и базовая модель сети',
+        level: 'self',
+      },
+      {
+        name: 'Хранение данных',
+        context:
+          'нормализация, денормализация, кэш, простые и составные индексы, шардирование',
+        level: 'self',
+      },
+      {
+        name: 'Нейросети',
+        context: 'терминология и запуск локальных квантованных моделей',
+        level: 'self',
+      },
+      {
+        name: 'Веб-геймдев',
+        context: 'небольшой опыт прототипов на Godot 4',
+        level: 'edu',
+      },
     ],
   },
 ];

@@ -1,0 +1,211 @@
+// Полноэкранный просмотр иллюстраций.
+// Рамка получает прозрачную кнопку на всю площадь, а сам просмотр живёт
+// в <dialog>: так работают Esc, фокус-трап и модальный слой браузера.
+
+.figure__open {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: zoom-in;
+}
+
+// Небольшая метка в углу подсказывает, что иллюстрацию можно открыть.
+.figure__open-icon {
+  position: absolute;
+  right: clamp(20px, 3vw, 34px);
+  bottom: clamp(20px, 3vw, 34px);
+  display: grid;
+  width: 34px;
+  height: 34px;
+  place-items: center;
+  border: 1px solid var(--line-strong);
+  background: rgba(24, 25, 29, 0.72);
+  color: var(--text-2);
+  font-size: 1rem;
+  line-height: 1;
+  transition:
+    border-color 180ms var(--ease-out),
+    color 180ms var(--ease-out),
+    background-color 180ms var(--ease-out);
+}
+
+.figure__open:hover .figure__open-icon,
+.figure__open:focus-visible .figure__open-icon {
+  border-color: var(--text);
+  background: rgba(24, 25, 29, 0.92);
+  color: var(--text);
+}
+
+.figure__open:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: -4px;
+}
+
+html.media-viewer-open,
+html.media-viewer-open body {
+  overflow: hidden;
+}
+
+.media-viewer {
+  inset: 0;
+  width: 100%;
+  max-width: none;
+  height: 100vh;
+  height: 100dvh;
+  max-height: none;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: rgba(16, 17, 20, 0.985);
+  color: var(--text);
+  // Просмотр — это изображение, а не текст: выделение мышью мешает
+  // панорамированию и оставляет синие маркеры поверх схемы.
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.media-viewer::backdrop {
+  background: rgba(8, 9, 11, 0.82);
+}
+
+.media-viewer__bar {
+  position: absolute;
+  z-index: 2;
+  top: 0;
+  right: 0;
+  left: 0;
+  display: flex;
+  min-height: 64px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 0 var(--shell-pad);
+  border-bottom: 1px solid var(--line);
+  background: linear-gradient(
+    to bottom,
+    rgba(24, 25, 29, 0.96),
+    rgba(24, 25, 29, 0.72)
+  );
+}
+
+.media-viewer__title {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.media-viewer__tools {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 8px;
+}
+
+.media-viewer__tool {
+  display: grid;
+  min-width: 40px;
+  height: 40px;
+  padding: 0 10px;
+  place-items: center;
+  border: 1px solid var(--line-strong);
+  background: transparent;
+  color: var(--text-2);
+  font-family: var(--font-mono);
+  font-size: var(--fs-small);
+  line-height: 1;
+  cursor: pointer;
+  transition:
+    border-color 180ms var(--ease-out),
+    background-color 180ms var(--ease-out),
+    color 180ms var(--ease-out);
+}
+
+.media-viewer__tool:hover,
+.media-viewer__tool:focus-visible {
+  border-color: var(--text);
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--text);
+}
+
+.media-viewer__tool--close {
+  font-size: 1.35rem;
+}
+
+.media-viewer__zoom {
+  min-width: 64px;
+  letter-spacing: 0.05em;
+}
+
+.media-viewer__viewport {
+  position: absolute;
+  inset: 64px 0 0;
+  overflow: hidden;
+  cursor: grab;
+  touch-action: none;
+}
+
+.media-viewer__viewport.is-zoomed {
+  cursor: grabbing;
+}
+
+.media-viewer__content {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(16px, 4vw, 56px);
+  transform-origin: center center;
+  will-change: transform;
+}
+
+// Клон .figure__media теряет абсолютное позиционирование рамки и получает
+// всё пространство вьюпорта: так SVG и img одинаково работают при зуме.
+.media-viewer__content .figure__media {
+  position: static;
+  inset: auto;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+}
+
+.media-viewer__content .figure__media img {
+  object-fit: contain;
+  filter: none;
+  -webkit-user-drag: none;
+}
+
+@media (max-width: 767.98px) {
+  .media-viewer__bar {
+    min-height: 58px;
+    gap: 10px;
+  }
+
+  .media-viewer__viewport {
+    inset: 58px 0 0;
+  }
+
+  .media-viewer__title {
+    font-size: 0.72rem;
+  }
+
+  .media-viewer__tools {
+    gap: 6px;
+  }
+
+  .media-viewer__tool {
+    min-width: 36px;
+    height: 36px;
+    padding: 0 8px;
+  }
+
+  .media-viewer__zoom {
+    min-width: 56px;
+  }
+}

@@ -253,7 +253,6 @@
 .project-content .bullets-layout,
 .project-content .split,
 .project-content .figure-layout,
-.project-content .chart-layout,
 .project-content .timeline-layout,
 .project-content .matrix--group {
   display: block;
@@ -263,7 +262,6 @@
 .project-content .bullet-list,
 .project-content .split__columns,
 .project-content .figure,
-.project-content .chart,
 .project-content .timeline-entries,
 .project-content .skill-rows,
 .project-content .matrix__head {
@@ -280,13 +278,18 @@
 }
 
 /* Catalog */
-// Асимметричная сетка каталога: проекты имеют разный визуальный вес.
+// Каталог рассчитан ровно на два проекта: избранный занимает всю ширину,
+// второй — девять колонок слева. Оставшаяся треть — намеренная пауза,
+// в которой виден живой фон. Правила для третьей–пятой карточек удалены:
+// они были мёртвым кодом и ничего не рисовали.
 .catalog {
   display: grid;
   grid-template-columns: repeat(12, minmax(0, 1fr));
-  gap: clamp(20px, 3vw, 38px);
+  gap: var(--card-gap);
   align-items: start;
-  padding-bottom: var(--section-y);
+  // Панели соседних секций уже отступают на --panel-gap, поэтому
+  // вычитаем его, чтобы визуальный зазор остался ровно --card-gap.
+  padding-block: calc(var(--card-gap) - var(--panel-gap));
 }
 
 .catalog > * {
@@ -298,31 +301,19 @@
 }
 
 .catalog > :nth-child(2) {
-  grid-column: 1 / span 7;
-}
-
-.catalog > :nth-child(3) {
-  grid-column: 9 / span 4;
-  margin-top: clamp(40px, 7vw, 112px);
-}
-
-.catalog > :nth-child(4) {
-  grid-column: 2 / span 4;
-  margin-top: clamp(18px, 4vw, 56px);
-}
-
-.catalog > :nth-child(5) {
-  grid-column: 7 / span 5;
-  margin-top: clamp(54px, 10vw, 150px);
+  grid-column: 1 / span 9;
 }
 
 .block--project-tile {
   padding-block: 0;
 }
 
+// Featured и next стоят между обычными панелями: им нужен только
+// компенсирующий отступ, а не полный --section-y. Иначе вокруг карточки
+// появляется более 100 px пустоты.
 .block--project-tile.block--featured,
 .block--project-tile.block--next {
-  padding-block: var(--section-y);
+  padding-block: calc(var(--card-gap) - var(--panel-gap));
 }
 
 /* 404 */
@@ -427,20 +418,11 @@
     grid-template-columns: repeat(6, minmax(0, 1fr));
   }
 
-  .catalog > :nth-child(1) {
+  // На планшете оба проекта идут одной колонкой: асимметрия из двух
+  // карточек оставляла бы половину ряда пустой.
+  .catalog > :nth-child(n) {
     grid-column: 1 / -1;
-  }
-
-  .catalog > :nth-child(2),
-  .catalog > :nth-child(3),
-  .catalog > :nth-child(4),
-  .catalog > :nth-child(5) {
-    grid-column: span 3;
     margin-top: 0;
-  }
-
-  .catalog > :nth-child(2) {
-    grid-column: 1 / -1;
   }
 }
 
@@ -486,7 +468,7 @@
 
   .catalog {
     grid-template-columns: 1fr;
-    gap: 20px;
+    gap: var(--card-gap);
   }
 
   .catalog > :nth-child(n) {

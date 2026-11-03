@@ -3,7 +3,7 @@
 // а анимации и стили выбирают поведение по data-block / block--variant.
 import { site } from '../data/site.js';
 import { skillLegend } from '../data/skills.js';
-import { chartSvg, diagram } from './diagrams.js';
+import { diagram } from './diagrams.js';
 
 const pad = (value) => String(value).padStart(2, '0');
 const arrow = '<span class="arrow" aria-hidden="true">↗</span>';
@@ -291,24 +291,10 @@ function renderFigure(data) {
           <span class="figure__corner figure__corner--br" aria-hidden="true"></span>
           <span class="figure__scan" aria-hidden="true"></span>
           <div class="figure__media">${media}</div>
+          <button class="figure__open" type="button" data-media-open aria-label="Открыть изображение на весь экран">
+            <span class="figure__open-icon" aria-hidden="true">⤢</span>
+          </button>
         </div>
-        <figcaption class="figure__caption">
-          <span>${data.caption}</span>
-        </figcaption>
-      </figure>
-    </div>`,
-    { id: data.id, variant: data.variant }
-  );
-}
-
-/** График с подписью; данные приходят из описания проекта. */
-function renderChart(data) {
-  return block(
-    'chart',
-    `<div class="chart-layout">
-      ${sectionHead(data)}
-      <figure class="chart">
-        <div class="chart__frame">${chartSvg(data.values, data.labels)}</div>
         <figcaption class="figure__caption">
           <span>${data.caption}</span>
         </figcaption>
@@ -654,8 +640,6 @@ export function renderBlock(data) {
       return renderBullets(data);
     case 'figure':
       return renderFigure(data);
-    case 'chart':
-      return renderChart(data);
     case 'timeline':
       return renderTimeline(data);
     case 'matrix':

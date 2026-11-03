@@ -46,6 +46,7 @@
   height: 31px;
   place-items: center;
   border: 1px solid var(--line-strong);
+  border-radius: 50%;
   color: var(--text-2);
   font-family: var(--font-mono);
   font-size: 0.68rem;
@@ -59,8 +60,8 @@
 .wordmark__monogram::after {
   content: "";
   position: absolute;
-  top: 4px;
-  right: 4px;
+  top: 6px;
+  right: 6px;
   width: 3px;
   height: 3px;
   background: var(--text-3);
@@ -221,8 +222,12 @@
 }
 
 // Шапка мобильного меню повторяет высоту основного хедера.
+// Bootstrap 5.3.8 больше не раздвигает .offcanvas-header сам: без явного
+// space-between крестик прилипает к подписи вместо правого края.
 .mobile-nav__header {
   min-height: var(--header-h);
+  justify-content: space-between;
+  gap: 16px;
   padding: 0 var(--shell-pad);
   border-bottom: 1px solid var(--line);
 }
@@ -273,6 +278,8 @@
   display: grid;
   width: 40px;
   height: 40px;
+  flex: 0 0 auto;
+  margin-left: auto;
   place-items: center;
   border: 1px solid var(--line-strong);
   background: transparent;

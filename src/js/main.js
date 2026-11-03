@@ -11,6 +11,7 @@ import { site } from './data/site.js';
 import { createBackground } from './background/index.js';
 import { initRouter } from './router.js';
 import { initShell, mountShell } from './ui/shell.js';
+import { initMediaViewer } from './ui/media-viewer.js';
 
 document.documentElement.classList.add('js');
 
@@ -18,6 +19,7 @@ document.documentElement.classList.add('js');
 // чтобы при прямом открытии страницы оболочка уже была на месте.
 mountShell(site);
 initShell();
+initMediaViewer();
 
 // Canvas создаётся один раз и живёт независимо от роутера: смена раздела
 // не перезапускает сцену и не сбрасывает положение курсора.

@@ -256,9 +256,56 @@ function layersDiagram() {
   );
 }
 
+/** Комнаты в реальном времени: клиенты, API, координатор и хранилища. */
+function realtimeDiagram() {
+  const nodes = [
+    [85, 120, 170, 56, 'web / mobile'],
+    [315, 120, 170, 56, 'HTTP API'],
+    [545, 120, 170, 56, 'auth'],
+    [85, 280, 170, 56, 'WS rooms'],
+    [315, 280, 170, 56, 'coordinator'],
+    [545, 280, 170, 56, 'analytics'],
+    [85, 440, 170, 56, 'PostgreSQL'],
+    [315, 440, 170, 56, 'Redis'],
+    [545, 440, 170, 56, 'ClickHouse'],
+  ];
+
+  const boxes = nodes
+    .map(
+      ([x, y, w, h, label], index) => `
+      <g class="diagram__node" style="--n:${index}">
+        <rect x="${x}" y="${y}" width="${w}" height="${h}" rx="0" />
+        <text class="diagram__label diagram__label--node" x="${x + 14}" y="${y + 34}">${label}</text>
+        <circle class="diagram__dot" cx="${x + w - 16}" cy="${y + 16}" r="2.5" />
+      </g>`
+    )
+    .join('');
+
+  const links = `
+    <path class="diagram__link" d="M255 148H315" />
+    <path class="diagram__link" d="M485 148H545" />
+    <path class="diagram__link" d="M170 176V280" />
+    <path class="diagram__link" d="M400 176V280" />
+    <path class="diagram__link" d="M630 176V280" />
+    <path class="diagram__link" d="M170 336L400 440" />
+    <path class="diagram__link" d="M400 336L170 440" />
+    <path class="diagram__link" d="M400 336V440" />
+    <path class="diagram__link" d="M630 336V440" />
+  `;
+
+  return frame(
+    `${links}${boxes}
+    ${DOT(255, 148, 2.5)}${DOT(485, 148, 2.5)}${DOT(400, 336, 2.5)}
+    ${LABEL('realtime / 02', 58, 86)}
+    ${LABEL('rooms → events', 612, 518, 'text-anchor="end"')}`,
+    'Схема сервиса викторин в реальном времени'
+  );
+}
+
 const diagrams = {
   contour: contourDiagram,
   architecture: architectureDiagram,
+  realtime: realtimeDiagram,
   flow: flowDiagram,
   grid: gridDiagram,
   wave: waveDiagram,
@@ -268,44 +315,4 @@ const diagrams = {
 
 export function diagram(variant = 'graph') {
   return (diagrams[variant] || graphDiagram)();
-}
-
-export function chartSvg(values = [28, 46, 38, 64, 58, 76], labels = []) {
-  const max = Math.max(...values, 1);
-  const width = 720;
-  const height = 320;
-  const left = 56;
-  const bottom = 270;
-  const gap = values.length > 1 ? (width - left - 40) / (values.length - 1) : 0;
-  const points = values.map((value, index) => {
-    const x = left + index * gap;
-    const y = bottom - (value / max) * 190;
-    return [x, y];
-  });
-  const line = `M${points.map(([x, y]) => `${x} ${y.toFixed(1)}`).join(' L')}`;
-  const area = `${line} L${points[points.length - 1][0]} ${bottom} L${left} ${bottom} Z`;
-  return `<svg class="chart__svg" viewBox="0 0 ${width} ${height + 40}" role="img" aria-label="Демонстрационный график">
-    <g class="chart__grid">
-      ${[0, 1, 2, 3, 4]
-        .map((step) => {
-          const y = bottom - step * 47.5;
-          return `<line x1="${left}" y1="${y}" x2="${width - 30}" y2="${y}" />`;
-        })
-        .join('')}
-    </g>
-    ${LINE(left, bottom, width - 30, bottom, 'chart__axis')}
-    ${LINE(left, 50, left, bottom, 'chart__axis')}
-    <path class="chart__area" d="${area}" />
-    <path class="chart__path" pathLength="1" d="${line}" />
-    ${points
-      .map(
-        ([x, y], index) =>
-          `<g class="chart__point" style="--n:${index}">
-            <circle cx="${x}" cy="${y}" r="3.5" />
-            <text x="${x}" y="${bottom + 28}" text-anchor="middle">${labels[index] || index + 1}</text>
-          </g>`
-      )
-      .join('')}
-    <text class="chart__caption" x="${left}" y="28">демо-данные / заменить</text>
-  </svg>`;
 }

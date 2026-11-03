@@ -1,13 +1,23 @@
 // Стили смысловых блоков: первый экран, текст, списки, схемы, карточки,
 // таймлайны, матрицы навыков и контакты. Общие правила панелей и сетки
 // живут в _layout.scss, а здесь описана внутренняя композиция каждого типа.
+//
+// Почти все секции используют один каркас: 12 колонок и общий --gap.
+// Слева служебная подпись или заголовок (1–3/1–4), справа контент (4–12).
+// Исключения: hero (8 колонок имени + 3 колонки описания) и contact (6+5).
+// Сетка отвечает только за ширину колонок; фон, рамки и вертикальный ритм
+// задаёт .block в _layout.scss.
 
 /* Home hero */
 .hero {
   display: grid;
   grid-template-columns: repeat(12, minmax(0, 1fr));
   gap: var(--gap);
-  min-height: calc(100svh - var(--header-h) - 48px);
+  // Вычитаем не только шапку, но и нижний отступ секции: иначе имя
+  // прижимается к самому краю экрана, а панель уходит ниже первого экрана.
+  min-height: calc(
+    100svh - var(--header-h) - 48px - clamp(28px, 5vh, 56px)
+  );
 }
 
 // Левая часть первого экрана: имя и нижняя служебная строка.
@@ -260,23 +270,20 @@
   text-wrap: pretty;
 }
 
-/* Figures and charts */
-// Рамки для схем и графиков. Внутренний фон плотнее панели секции,
+/* Figures */
+// Рамки для схем. Внутренний фон плотнее панели секции,
 // чтобы линии диаграммы не сливались с будущей активной сценой.
-.figure-layout,
-.chart-layout {
+.figure-layout {
   display: grid;
   grid-template-columns: repeat(12, minmax(0, 1fr));
   gap: var(--gap);
 }
 
-.figure-layout .section-head,
-.chart-layout .section-head {
+.figure-layout .section-head {
   grid-column: 1 / -1;
 }
 
-.figure,
-.chart {
+.figure {
   grid-column: 4 / span 8;
   min-width: 0;
 }
@@ -380,52 +387,7 @@
   color: var(--text-2);
 }
 
-.chart__frame {
-  border: 1px solid var(--line);
-  background: rgba(24, 25, 29, 0.72);
-  padding: clamp(12px, 2vw, 28px);
-}
-
-.chart__svg {
-  width: 100%;
-  height: auto;
-  color: var(--text-2);
-}
-
-.chart__grid line {
-  stroke: var(--line-soft);
-  stroke-width: 1;
-}
-
-.chart__axis {
-  stroke: var(--line-strong);
-  stroke-width: 1;
-}
-
-.chart__area {
-  fill: rgba(255, 255, 255, 0.035);
-  stroke: none;
-}
-
-.chart__path {
-  fill: none;
-  stroke: var(--text-2);
-  stroke-width: 1.4;
-}
-
-.chart__point circle {
-  fill: var(--bg);
-  stroke: var(--text-2);
-  stroke-width: 1.2;
-}
-
-.chart__point {
-  transform-box: fill-box;
-  transform-origin: center;
-}
-
-.chart__point text,
-.chart__caption,
+/* Diagrams */
 .diagram__label {
   fill: currentColor;
   font-family: var(--font-mono);
@@ -433,19 +395,6 @@
   letter-spacing: 0.05em;
 }
 
-.chart__point text {
-  fill: var(--text-3);
-  font-size: 11px;
-}
-
-.chart__caption {
-  fill: var(--text-3);
-  font-size: 11px;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-}
-
-/* Diagrams */
 .diagram {
   width: 100%;
   height: 100%;
@@ -1456,18 +1405,21 @@
     grid-column: 1 / -1;
   }
 
+  // На планшете имя больше не растягивается на весь экран: фиксированная
+  // высота оставляла огромную пустоту и выталкивала описание за край.
   .hero__main {
-    min-height: calc(100svh - var(--header-h) - 40px);
+    min-height: 0;
   }
 
   .hero__aside {
     max-width: 520px;
     margin-left: 0;
+    padding-top: 6px;
     padding-bottom: 0;
   }
 
   .hero__name {
-    padding-top: 54px;
+    padding-top: clamp(44px, 7vh, 76px);
     font-size: clamp(3rem, 13vw, 7rem);
   }
 
@@ -1476,7 +1428,6 @@
   .split,
   .bullets-layout,
   .figure-layout,
-  .chart-layout,
   .timeline-layout,
   .matrix--compact,
   .matrix--group,
@@ -1491,7 +1442,6 @@
   .bullet-list,
   .bullets-layout > .block-action,
   .figure,
-  .chart,
   .timeline-entries,
   .timeline-steps,
   .timeline-layout > .block-action,
@@ -1536,7 +1486,7 @@
   }
 
   .hero__name {
-    padding-top: clamp(58px, 11vh, 92px);
+    padding-top: clamp(36px, 6vh, 60px);
     font-size: clamp(2.9rem, 14.5vw, 5.5rem);
   }
 
