@@ -459,7 +459,8 @@
   padding-left: 26px;
 }
 
-.timeline-entries__line {
+.timeline-entries::before {
+  content: "";
   position: absolute;
   top: 4px;
   bottom: 12px;
@@ -533,7 +534,8 @@
   padding-top: 30px;
 }
 
-.timeline-steps__line {
+.timeline-steps::before {
+  content: "";
   position: absolute;
   top: 0;
   right: 0;
@@ -1490,7 +1492,7 @@
     padding-left: 24px;
   }
 
-  .timeline-steps__line {
+  .timeline-steps::before {
     top: 0;
     right: auto;
     bottom: 0;

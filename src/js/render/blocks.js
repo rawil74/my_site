@@ -57,12 +57,14 @@ function tags(items = [], className = 'tag-list') {
 /** Пары «подпись — значение» для роли, периода, статуса и т. п. */
 function metaList(items = [], className = 'meta-list') {
   if (!items.length) return '';
-  return `<dl class="${className}">${items
+  // Каждая пара — отдельный <dl>: <div> внутри <dl> запрещён валидаторами,
+  // а обёртка нужна, чтобы сохранить сетку «подпись / значение».
+  return `<div class="${className}">${items
     .map(
       (item) =>
-        `<div class="meta-list__item"><dt>${item.label}</dt><dd>${item.value}</dd></div>`
+        `<dl class="meta-list__item"><dt>${item.label}</dt><dd>${item.value}</dd></dl>`
     )
-    .join('')}</dl>`;
+    .join('')}</div>`;
 }
 
 /** Кнопка-действие. Без href превращается в неактивную заглушку. */
@@ -337,7 +339,6 @@ function renderTimeline(data) {
       `<div class="timeline-layout timeline-layout--${variant}">
         ${sectionHead(data)}
         <ol class="timeline-steps timeline-steps--${variant}">
-          <span class="timeline-steps__line" aria-hidden="true"></span>
           ${items}
         </ol>
         ${data.action ? `<div class="block-action">${actionLink(data.action)}</div>` : ''}
@@ -367,7 +368,6 @@ function renderTimeline(data) {
     `<div class="timeline-layout timeline-layout--vertical">
       ${sectionHead(data)}
       <ol class="timeline-entries">
-        <span class="timeline-entries__line" aria-hidden="true"></span>
         ${items}
       </ol>
     </div>`,
@@ -589,14 +589,14 @@ function renderMeta(data) {
       `<aside class="project-rail">
         <div class="project-rail__sticky">
           <a class="back-link mono" href="/projects"><span aria-hidden="true">←</span> Все проекты</a>
-          <dl class="rail-meta">
+          <div class="rail-meta">
             ${data.meta
               .map(
                 (item) =>
-                  `<div><dt>${item.label}</dt><dd>${item.value}</dd></div>`
+                  `<dl class="rail-meta__item"><dt>${item.label}</dt><dd>${item.value}</dd></dl>`
               )
               .join('')}
-          </dl>
+          </div>
           <nav class="rail-nav" aria-label="Содержание проекта">
             ${data.nav
               .map(

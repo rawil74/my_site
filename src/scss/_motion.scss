@@ -57,12 +57,12 @@
   animation-delay: calc(var(--delay, 0ms) + 150ms);
 }
 
-.js .view [data-block].is-in[data-block="timeline"] .timeline-entries__line {
+.js .view [data-block].is-in[data-block="timeline"] .timeline-entries::before {
   animation: line-y 1000ms var(--ease-soft) both;
   animation-delay: calc(var(--delay, 0ms) + 80ms);
 }
 
-.js .view [data-block].is-in[data-block="timeline"] .timeline-steps__line {
+.js .view [data-block].is-in[data-block="timeline"] .timeline-steps::before {
   animation: line-x 1000ms var(--ease-soft) both;
   animation-delay: calc(var(--delay, 0ms) + 80ms);
 }

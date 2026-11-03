@@ -143,7 +143,7 @@
   margin-top: 26px;
 }
 
-.rail-meta > div {
+.rail-meta__item {
   padding: 10px 0;
   border-top: 1px solid var(--line);
 }
@@ -401,7 +401,7 @@
     margin-top: 18px;
   }
 
-  .rail-meta > div {
+  .rail-meta__item {
     padding-top: 0;
     border-top: 0;
   }
