@@ -131,6 +131,9 @@
   position: sticky;
   top: calc(var(--header-h) + 32px);
   padding-top: 18px;
+  // Нижний отступ держит последний пункт внутри панели: sticky-колонка
+  // упирается в низ блока раньше, чем панель заканчивается.
+  padding-bottom: calc(var(--panel-gap) + 16px);
   border-top: 1px solid var(--line);
 }
 
@@ -389,6 +392,7 @@
   .project-rail__sticky {
     position: static;
     padding-top: 14px;
+    padding-bottom: 0;
   }
 
   .rail-meta {

@@ -109,6 +109,23 @@ function isModifiedClick(event) {
 }
 
 /**
+ * Прокручивает к якорю текущей страницы.
+ * Отступ сверху задаёт scroll-margin-top у .block, поэтому шапка не
+ * перекрывает заголовок секции.
+ */
+function scrollToHash(hash, smooth = true) {
+  const id = decodeURIComponent(hash.replace(/^#/, ''));
+  const target = id ? document.getElementById(id) : null;
+  if (!target) return;
+  // Скип-ссылка ведёт на #main с tabindex="-1": фокус должен туда перейти.
+  if (target.hasAttribute('tabindex')) target.focus({ preventScroll: true });
+  target.scrollIntoView({
+    block: 'start',
+    behavior: smooth && !prefersReducedMotion() ? 'smooth' : 'auto',
+  });
+}
+
+/**
  * Глобальный перехват внутренних ссылок.
  * Внешние домены, mailto:, tel:, download и target="_blank" остаются
  * обычными ссылками браузера.
@@ -125,8 +142,23 @@ function onDocumentClick(event) {
   const path = normalizePath(url.pathname);
   const samePath = path === normalizePath(window.location.pathname);
 
-  if (samePath && url.hash) return;
   if (link.href.startsWith('mailto:') || link.href.startsWith('tel:')) return;
+
+  // Якорь внутри открытой страницы: вид не перерисовываем, иначе
+  // восстановление скролла вернёт пользователя на прежнее место.
+  // pushState не порождает popstate, поэтому прокрутка остаётся на месте.
+  if (samePath && url.hash) {
+    event.preventDefault();
+    if (!window.location.hash) {
+      // Запоминаем позицию до прыжка: возврат «назад» вернёт её.
+      scrollPositions.set(path, window.scrollY);
+    }
+    if (url.hash !== window.location.hash) {
+      window.history.pushState({ path }, '', `${routeUrl(path)}${url.hash}`);
+    }
+    scrollToHash(url.hash);
+    return;
+  }
 
   event.preventDefault();
 
@@ -141,8 +173,20 @@ function onDocumentClick(event) {
 
 /** Возврат/вперёд: восстанавливаем сохранённую позицию скролла. */
 function onPopState() {
-  scrollPositions.set(currentPath, window.scrollY);
   const path = normalizePath(window.location.pathname);
+
+  // Переход между якорями одной страницы: вид уже отрисован, а позиция
+  // скролла восстановилась бы поверх выбранной секции.
+  if (path === currentPath) {
+    if (window.location.hash) {
+      scrollToHash(window.location.hash, false);
+    } else {
+      window.scrollTo({ top: scrollPositions.get(path) ?? 0, behavior: 'auto' });
+    }
+    return;
+  }
+
+  scrollPositions.set(currentPath, window.scrollY);
   const restoreY = scrollPositions.get(path) ?? 0;
   render(path, { pop: true, restoreY }).catch((error) => {
     console.error('Не удалось восстановить маршрут', error);

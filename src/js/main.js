@@ -11,6 +11,7 @@ import { site } from './data/site.js';
 import { createBackground } from './background/index.js';
 import { initRouter } from './router.js';
 import { initShell, mountShell } from './ui/shell.js';
+import { initBackgroundToggle } from './ui/background-toggle.js';
 import { initMediaViewer } from './ui/media-viewer.js';
 
 document.documentElement.classList.add('js');
@@ -24,6 +25,7 @@ initMediaViewer();
 // Canvas создаётся один раз и живёт независимо от роутера: смена раздела
 // не перезапускает сцену и не сбрасывает положение курсора.
 const background = createBackground(document.getElementById('bg-canvas'));
+initBackgroundToggle(background);
 
 initRouter();
 

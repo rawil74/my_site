@@ -154,6 +154,56 @@
   color: var(--text);
 }
 
+// Переключатель фоновой анимации: компактная кнопка с индикатором.
+// Состояние читается по aria-pressed, которое обновляет ui/background-toggle.js.
+.bg-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 38px;
+  padding: 0 11px;
+  border: 1px solid var(--line-strong);
+  background: transparent;
+  color: var(--text-3);
+  cursor: pointer;
+  transition:
+    border-color 180ms var(--ease-out),
+    background-color 180ms var(--ease-out),
+    color 180ms var(--ease-out);
+}
+
+.bg-toggle:hover {
+  border-color: var(--text);
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--text);
+}
+
+.bg-toggle__dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--text);
+  box-shadow: 0 0 0 3px rgba(213, 215, 220, 0.14);
+  transition:
+    background-color 200ms var(--ease-out),
+    box-shadow 200ms var(--ease-out);
+}
+
+.bg-toggle[aria-pressed="false"] .bg-toggle__dot {
+  background: transparent;
+  box-shadow: inset 0 0 0 1px var(--text-3);
+}
+
+.bg-toggle__label {
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  white-space: nowrap;
+}
+
+.bg-toggle[hidden] {
+  display: none;
+}
+
 // Кнопка открытия Offcanvas. Видна только на планшете и телефоне.
 .menu-button {
   display: none;
@@ -347,6 +397,7 @@
   }
 
   .site-header__aside {
+    gap: 12px;
     margin-left: auto;
   }
 
@@ -363,6 +414,37 @@
   .site-footer__inner {
     flex-wrap: wrap;
     padding-block: 18px;
+  }
+}
+
+// На узких телефонах (уже 390 px) в шапке остаётся только монограмма:
+// вместе с подписью «Выкл. фон» и кнопкой «Меню» имя не помещается в строку.
+@media (max-width: 389.98px) {
+  .wordmark__name {
+    display: none;
+  }
+}
+
+// Узкие телефоны: «Меню» превращается в иконку, но подпись у кнопки фона
+// остаётся — иначе непонятно, что она переключает.
+@media (max-width: 479.98px) {
+  .site-header__aside {
+    gap: 8px;
+  }
+
+  .bg-toggle {
+    gap: 6px;
+    padding: 0 9px;
+  }
+
+  .menu-button {
+    width: 38px;
+    justify-content: center;
+    padding: 0;
+  }
+
+  .menu-button__label {
+    display: none;
   }
 }
 

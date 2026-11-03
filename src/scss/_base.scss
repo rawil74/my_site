@@ -301,27 +301,7 @@ h4 {
   display: inline-block;
 }
 
-.link-arrow {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  border-bottom: 1px solid var(--line-strong);
-  padding-bottom: 4px;
-  transition: border-color 180ms var(--ease-out);
-}
-
-.link-arrow:hover {
-  border-color: var(--text);
-}
-
-// Тонкий разделитель для локальных композиций.
-.hairline {
-  height: 1px;
-  background: var(--line);
-}
-
-.visually-hidden,
-.visually-hidden-focusable:not(:focus):not(:focus-within) {
+.visually-hidden {
   position: absolute !important;
   width: 1px !important;
   height: 1px !important;

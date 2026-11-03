@@ -127,7 +127,12 @@ function ensureDialog() {
 
   viewport.addEventListener('pointerdown', (event) => {
     if (event.pointerType === 'mouse' && event.button !== 0) return;
-    viewport.setPointerCapture(event.pointerId);
+    // Синтетические события не имеют активного указателя — захват не нужен.
+    try {
+      viewport.setPointerCapture(event.pointerId);
+    } catch {
+      /* указатель уже отпущен */
+    }
     pointers.set(event.pointerId, { x: event.clientX, y: event.clientY });
     moved = false;
     if (pointers.size === 2) {

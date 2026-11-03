@@ -30,7 +30,11 @@ function headerTemplate(site) {
     </nav>
     <div class="site-header__aside">
       <a class="header-link mono" href="${site.github}" target="_blank" rel="noreferrer">GitHub <span aria-hidden="true">↗</span></a>
-      <button class="menu-button" type="button" data-bs-toggle="offcanvas" data-bs-target="#mobileNav" aria-controls="mobileNav" aria-expanded="false">
+      <button class="bg-toggle" type="button" data-bg-toggle aria-pressed="true" title="Выключить фон">
+        <span class="bg-toggle__dot" aria-hidden="true"></span>
+        <span class="bg-toggle__label mono" data-bg-toggle-label>Выкл. фон</span>
+      </button>
+      <button class="menu-button" type="button" data-bs-toggle="offcanvas" data-bs-target="#mobileNav" aria-controls="mobileNav" aria-expanded="false" aria-label="Меню">
         <span class="menu-button__label mono">Меню</span>
         <span class="menu-button__icon" aria-hidden="true"><span></span><span></span></span>
       </button>

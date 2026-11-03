@@ -581,6 +581,9 @@ function renderMeta(data) {
   }
 
   if (data.variant === 'project-rail') {
+    // В рейле проекта показываем только реальные ссылки: заглушки
+    // «Репозиторий [добавить]» и «Демо [добавить]» здесь не нужны.
+    const links = data.project.links.filter((link) => link.href);
     return block(
       'meta',
       `<aside class="project-rail">
@@ -602,7 +605,7 @@ function renderMeta(data) {
               )
               .join('')}
           </nav>
-          <div class="rail-links">${data.project.links.map(projectLink).join('')}</div>
+          ${links.length ? `<div class="rail-links">${links.map(projectLink).join('')}</div>` : ''}
         </div>
       </aside>`,
       { variant: data.variant, tag: 'div' }

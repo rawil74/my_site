@@ -2,13 +2,13 @@
 // TODO(author): заменить заглушки имени, почты и ссылок на реальные данные.
 export const site = {
   firstName: 'Равиль',
-  lastName: 'Фамилия',
-  fullName: 'Равиль Фамилия',
+  lastName: 'Фахрисламов',
+  fullName: 'Равиль Фахрисламов',
   role: 'Разработчик · backend, Python / FastAPI',
   tagline: 'Разбираюсь в системах. Создаю свои.',
   intro:
     'Проектирую бэкенд на Python: модели данных, API и реальное время. До интерфейса довожу сам — от сетки и типографики до canvas-сцены. Люблю, когда сложное объясняется просто, а система ведёт себя предсказуемо.',
-  email: 'hello@example.com',
+  email: 'fahrislamowrawil@gmail.com',
   emailIsPlaceholder: true,
   github: 'https://github.com/rawil74',
   nav: [
@@ -32,8 +32,8 @@ export const site = {
     },
     {
       label: 'Email',
-      value: 'hello@example.com',
-      href: 'mailto:hello@example.com',
+      value: 'fahrislamowrawil@gmail.com',
+      href: 'mailto:fahrislamowrawil@gmail.com',
       placeholder: true,
     },
   ],

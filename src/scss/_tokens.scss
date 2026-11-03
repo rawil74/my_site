@@ -13,8 +13,6 @@
   // поверхности читались как отдельные слои, а не сливались с фоном.
   --bg: #18191d;
   --surface-1: #1f2126;
-  --surface-2: #25272d;
-  --surface-3: #2c2e34;
   --panel-top: rgba(34, 36, 42, 0.9);
   --panel-bottom: rgba(27, 29, 34, 0.86);
   --panel-border: rgba(235, 237, 241, 0.085);
@@ -52,7 +50,6 @@
   --fs-display: clamp(3.2rem, 8.6vw, 9.25rem);
   --fs-h1: clamp(2.75rem, 6vw, 6rem);
   --fs-h2: clamp(1.9rem, 3.3vw, 3.35rem);
-  --fs-h3: clamp(1.15rem, 1.55vw, 1.45rem);
   --fs-lead: clamp(1.15rem, 1.65vw, 1.5rem);
   --fs-body: clamp(1.04rem, 0.98rem + 0.25vw, 1.2rem);
   --fs-copy: clamp(0.98rem, 0.94rem + 0.15vw, 1.06rem);

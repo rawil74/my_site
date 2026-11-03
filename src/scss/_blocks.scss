@@ -388,13 +388,6 @@
 }
 
 /* Diagrams */
-.diagram__label {
-  fill: currentColor;
-  font-family: var(--font-mono);
-  font-size: 12px;
-  letter-spacing: 0.05em;
-}
-
 .diagram {
   width: 100%;
   height: 100%;
@@ -415,20 +408,6 @@
   stroke: var(--line-strong);
 }
 
-.diagram__contour {
-  fill: none;
-  stroke: rgba(255, 255, 255, 0.13);
-  stroke-width: 1;
-}
-
-.diagram__contour:nth-child(2n) {
-  stroke: rgba(255, 255, 255, 0.22);
-}
-
-.diagram__contour:nth-child(4n) {
-  stroke: rgba(255, 255, 255, 0.3);
-}
-
 .diagram__node {
   fill: var(--bg);
   stroke: rgba(235, 237, 241, 0.2);
@@ -441,27 +420,13 @@
   stroke-width: 1;
 }
 
-.diagram__link--dashed {
-  stroke-dasharray: 4 6;
-  stroke: rgba(255, 255, 255, 0.12);
-}
-
 .diagram__dot {
   fill: var(--text-2);
 }
 
-.diagram__dot--bright {
-  fill: var(--text);
-}
-
-.diagram__halo {
-  fill: rgba(255, 255, 255, 0.05);
-  stroke: rgba(255, 255, 255, 0.12);
-  stroke-width: 1;
-}
-
 .diagram__label {
   fill: var(--text-3);
+  font-family: var(--font-mono);
   font-size: 12px;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -470,33 +435,6 @@
 .diagram__label--node {
   fill: var(--text-2);
   font-size: 13px;
-}
-
-.diagram__cell rect {
-  fill: rgba(24, 25, 29, 0.48);
-  stroke: rgba(235, 237, 241, 0.16);
-  stroke-width: 1;
-}
-
-.diagram__cell-line {
-  fill: none;
-  stroke: rgba(255, 255, 255, 0.1);
-  stroke-width: 1;
-}
-
-.diagram__area {
-  fill: rgba(255, 255, 255, 0.04);
-  stroke: none;
-}
-
-.diagram__path {
-  fill: none;
-  stroke: rgba(255, 255, 255, 0.65);
-  stroke-width: 1.3;
-}
-
-.diagram__point circle {
-  fill: var(--text-2);
 }
 
 /* Timeline */
@@ -1162,7 +1100,7 @@
 }
 
 .contact__body {
-  grid-column: 8 / span 5;
+  grid-column: 7 / -1;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
@@ -1177,7 +1115,7 @@
   padding-bottom: 9px;
   border-bottom: 1px solid var(--line-strong);
   font-family: var(--font-display);
-  font-size: clamp(1.35rem, 2.6vw, 2.55rem);
+  font-size: clamp(1.35rem, 2.5vw, 2.55rem);
   font-weight: 300;
   letter-spacing: -0.035em;
   line-height: 1.1;
@@ -1253,6 +1191,22 @@
 
 .contact--compact .contact__title {
   font-size: clamp(1.9rem, 3.6vw, 3.5rem);
+}
+
+// Узкие телефоны: почта должна оставаться в одну строку. Ширина колонки
+// там меньше длины адреса, поэтому шрифт плавно уменьшается вместе с экраном.
+@media (max-width: 479.98px) {
+  .contact__mail {
+    font-size: clamp(0.96rem, 4.9vw, 1.35rem);
+  }
+}
+
+// На 320 px даже минимальный размер не помещается в колонку на волосок:
+// чуть плотнее трекинг, и адрес остаётся в одну строку.
+@media (max-width: 339.98px) {
+  .contact__mail {
+    letter-spacing: -0.05em;
+  }
 }
 
 /* Small shared elements */
